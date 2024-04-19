@@ -1,0 +1,19 @@
+server:
+  servlet:
+    session:
+      timeout: 120s
+spring:
+  mvc:
+    async:
+      request-timeout: 12000000
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
+  couchbase:
+    env:
+      io:
+        idle-http-connection-timeout: 50000
+  pulsar:
+    admin:
+      read-timeout: 50000

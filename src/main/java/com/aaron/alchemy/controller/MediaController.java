@@ -33,7 +33,7 @@ public class MediaController {
      * @throws IOException
      */
     @GetMapping("/getStreamVideo")
-    public void getStreamVideo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void getStreamVideo(HttpServletRequest request, HttpServletResponse response) {
         response.reset();
         File file = new File("D:\\Media\\009.mp4"); // 改成你的目标文件
         long fileLength = file.length();

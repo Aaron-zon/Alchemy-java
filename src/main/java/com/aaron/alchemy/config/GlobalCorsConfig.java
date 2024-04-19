@@ -1,5 +1,6 @@
 package com.aaron.alchemy.config;
 
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -9,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class GlobalCorsConfig {
     @Bean
-    public org.springframework.web.filter.CorsFilter corsFilter() {
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration config = new CorsConfiguration();
@@ -22,11 +23,10 @@ public class GlobalCorsConfig {
         config.addAllowedOrigin("*");
         // 需要跨域用户凭证（cookie、HTTP认证及客户端SSL证明等）
         //config.setAllowCredentials(true);
-        //config.addAllowedOriginPattern("*");
+        config.addAllowedOriginPattern("*");
 
         // 跨域路径配置
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
 }
