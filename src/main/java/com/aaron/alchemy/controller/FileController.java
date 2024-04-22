@@ -1,12 +1,11 @@
 package com.aaron.alchemy.controller;
 
+import com.aaron.alchemy.model.dto.FileChunkDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -18,6 +17,11 @@ import java.util.Date;
 public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
+    /**
+     * 文件下载
+     * @param request
+     * @param response
+     */
     @GetMapping("/downloadFile")
     public void aDownloadFile(HttpServletRequest request, HttpServletResponse response) {
         String path = "D:\\Media\\";
@@ -44,6 +48,11 @@ public class FileController {
         }
     }
 
+    /**
+     * 文件上传
+     * @param request
+     * @param response
+     */
     @PostMapping("/uploadFile")
     public void uploadFile(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -60,4 +69,24 @@ public class FileController {
         }
     }
 
+    /**
+     * 分片上传
+     * @param chunk
+     * @param fileChunk
+     * @return
+     */
+    @PostMapping("/uploadChunk")
+    public Boolean uploadChunk(@RequestParam("chunk") MultipartFile chunk, FileChunkDTO fileChunk) {
+        String filePath = "D:\\Media\\";
+        String fullPath = filePath + fileChunk.getFileName();
+        try (RandomAccessFile rf = new RandomAccessFile(fullPath, "rw")) {
+            rf.seek(fileChunk.getStart());
+            rf.write(chunk.getBytes());
+            return true;
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+            return false;
+        }
+
+    }
 }
